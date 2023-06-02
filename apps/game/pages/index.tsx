@@ -9,12 +9,16 @@ import {
   StudiableItem,
 } from 'dataset/types';
 import Image from 'next/image';
+import { useState } from 'react';
+import Food from '../components/Food';
+import Lives from '../components/Lives';
+import Score from '../components/Score';
+import Zone from '../components/Zone';
+import { arrayFromLength } from '../util/arrayfromlength';
 
 const IMAGE_HEIGHT = 100;
 const IMAGE_WIDTH = 120;
 export default function Game() {
-  // If you don't want SSR
-  if (typeof window !== 'undefined') return null;
 
   // to get a specific Set
   const { disneyPrincessTrivia: quizletSet } = Fun.getAllSetsMap();
@@ -58,11 +62,29 @@ export default function Game() {
     </>
   );
 
+
+
+
+
+
+
+  const [ score, setScore ] = useState(0);
+  const [ lives, setLives ] = useState<0 | 1 | 2 | 3>(3);
+  const [ pots, setPots ] = useState(3);
+
   return (
-    <div>
-      <h1>Your game title here!</h1>
-      <h2>Set used: {quizletSet.set.title}</h2>
-      {renderTerms(quizletSet.studiableItem)}
+    <div className='min-h-screen flex flex-col'>
+      <header className='px-2 mb-2 flex justify-between'>
+        <Score score={score} />
+        <h1>Order Up!</h1>
+        <Lives lives={lives} />
+      </header>
+      <main className='flex-1 flex align-bottom relative'>
+        <Food pots={3}/>
+        {arrayFromLength(pots, 0).map((_, i) =>
+        <Zone key={i} setScore={setScore} />)}
+      </main>
+      
     </div>
   );
 }
