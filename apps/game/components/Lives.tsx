@@ -1,5 +1,5 @@
 export default function Lives(props: {
-    lives: 3 | 2 | 1 | 0
+    lives: number
 }) {
 
     return (

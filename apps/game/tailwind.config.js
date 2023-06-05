@@ -16,9 +16,12 @@ module.exports = {
       },
       keyframes: {
         drop: {
-          '0%': { top: '0%', transform: 'translateX(-50%)'},
-          '80%': {transform: 'translateX(-50%) scale(1)'},
-          '100%': { top: '75%', transform: 'translateX(-50%) scale(0.2)' }
+          '0%': { top: '0%'},
+          '100%': { top: '95%'}
+        },
+        shrink: {
+          '0%, 80%': {transform: 'scale(1)'},
+          '100%': {transform: 'scale(0)'}
         }
       }
     },
