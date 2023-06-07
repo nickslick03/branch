@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@preact/signals-react": "^1.3.2",
     "dataset": "*",
     "next": "latest",
     "react": "^18.2.0",

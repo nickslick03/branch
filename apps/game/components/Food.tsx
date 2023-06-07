@@ -1,18 +1,19 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Food({
+  id,
   isDescending,
-  setIsDescending,
   pots,
   startingLane,
   finishedDescending,
 }: {
+  id: number,
   isDescending: boolean;
-  setIsDescending: Dispatch<SetStateAction<boolean>>;
   pots: number;
   startingLane: number;
-  finishedDescending: (lane: number) => void;
+  finishedDescending: (id: number, lane: number) => void;
 }) {
+
   const [isSelected, setIsSelected] = useState(false);
   const [lane, setLane] = useState(startingLane);
   const [percentDown, setPercentDown] = useState(0);
@@ -20,16 +21,14 @@ export default function Food({
   const changeLane = (num: number) => {
     if (lane + num >= 1 && lane + num <= pots) {
       setLane(lane + num);
-      changePercentDown();
     }
   };
 
   const changePercentDown = (num?: number) => {
     if (percentDown >= 90) {
-      finishedDescending(lane);
+      finishedDescending(id, lane);
       setPercentDown(0);
       setIsSelected(false);
-      setIsDescending(false);
     } else {
       setPercentDown(percentDown + (num || 5));
     }
@@ -43,38 +42,38 @@ export default function Food({
 
   useEffect(() => {
     if (isDescending) {
-      const id = setInterval(() => {
-        changePercentDown();
-      }, 500);
-      return () => clearInterval(id);
-    }
-  });
-
-  useEffect(() => {
-    if (isDescending) {
+      setLane(startingLane);
       setPercentDown(0);
     }
-  }, [isDescending]);
+  }, [isDescending, startingLane]);
 
+  useEffect(() => {
+    const callback = () => changePercentDown();
+    if (isDescending) { 
+      document.addEventListener('descend', callback);
+    }
+    return () => document.removeEventListener('descend', callback);
+  });
+  
   return (
     <div
       className={
-        `h-20 w-20 text-white bg-orange-950 
-            absolute border-4 origin-center -translate-x-1/2 ` +
+        `h-20 w-20 text-white bg-orange-950 border-4
+        absolute origin-center -translate-x-1/2 ` +
         (isDescending ? '' : 'hidden') +
         (isSelected ? 'border-red-500' : '')
       }
       style={{
-        left: Math.floor((lane / pots) * 100 - (1 / pots) * 50) + '%',
+        left: (lane / pots) * 100 - 50 / pots + '%',
         top: percentDown + '%',
       }}
-      tabIndex={isDescending ? 0 : -1}
+      tabIndex={isDescending[id] ? 0 : -1}
       onFocus={() => setIsSelected(true)}
       onBlur={() => setIsSelected(false)}
       onKeyDown={e => handleKeyDown(e.key)}
       onTouchStart={() => {}}
       onTouchMove={() => {}}>
-      Term
+      Term {id + 1}
     </div>
   );
 }

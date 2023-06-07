@@ -1,15 +1,17 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 export default function Pot({
-  setScore,
   index,
   lastLane,
+  setScore,
+  setLives,
   setLastLane,
 }: {
-  setScore: Dispatch<SetStateAction<number>>;
-  index: number;
-  lastLane: number;
-  setLastLane: Dispatch<SetStateAction<number>>;
+  index: number,
+  lastLane: number,
+  setScore: Dispatch<SetStateAction<number>>,
+  setLives: Dispatch<SetStateAction<number>>,
+  setLastLane: Dispatch<SetStateAction<number>>,
 }) {
   let [amount, setAmount] = useState(0);
 
@@ -39,7 +41,10 @@ export default function Pot({
     <div className="flex-1 flex flex-col items-strech">
       
       {/*POT*/}
-      <div className="w-32 h-24 text-white bg-red-700 self-center">
+      <div 
+        className="z-10 text-white bg-red-700 self-center 
+        min-w-[6rem] w-[20vw] max-w-[15rem]
+        min-h-[4.5rem] h-[15vw] max-h-[10rem]">
         Definition {index + 1}
       </div>
 
