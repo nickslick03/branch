@@ -1,4 +1,7 @@
-export function arrayFromLength <T>(length: number, fill: T): Array<T> { 
-
-    return Array.from<T>({length}).fill(fill);
+export function createIndexedArray (length: number): number[] {
+    
+    return Array
+    .from({length})
+    .fill(0)
+    .map((_, i) => i);
 }

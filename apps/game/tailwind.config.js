@@ -14,15 +14,8 @@ module.exports = {
         brandblue: colors.blue[500],
         brandred: colors.red[500],
       },
-      keyframes: {
-        drop: {
-          '0%': { top: '0%'},
-          '100%': { top: '95%'}
-        },
-        shrink: {
-          '0%, 80%': {transform: 'scale(1)'},
-          '100%': {transform: 'scale(0)'}
-        }
+      fontFamily: {
+        retro: ['retro']
       }
     },
   },

@@ -1,57 +1,29 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { PropsWithChildren } from "react";
 
 export default function Pot({
-  index,
-  lastLane,
-  setScore,
-  setLives,
-  setLastLane,
+    children,
+    imgURL
 }: {
-  index: number,
-  lastLane: number,
-  setScore: Dispatch<SetStateAction<number>>,
-  setLives: Dispatch<SetStateAction<number>>,
-  setLastLane: Dispatch<SetStateAction<number>>,
-}) {
-  let [amount, setAmount] = useState(0);
+    imgURL?: string;
+} & PropsWithChildren) {
+    return (
+        <div 
+            className="z-10 text-white font-bold 
+            bg-gray-500 self-center relative
+            text-sm text-center leading-tight
+            flex justify-center items-center
+            min-w-[6rem] w-[20vw] max-w-[15rem]
+            min-h-[4.5rem] h-[15vw] max-h-[10rem]
+            ">
+            <div 
+                className="absolute -z-10 w-full h-full
+                bg-no-repeat bg-contain bg-center opacity-60"
+                style={{
+                    "backgroundImage" : imgURL != undefined ? `url("${imgURL}")` : ''
+                }}>
 
-  useEffect(() => {
-    // Food fell into different pot
-    if (index + 1 != lastLane) return;
-
-    if (true) {
-      // answer is correct
-      if (amount == 2) {
-        setScore(s => s + 10);
-        setAmount(0);
-      } else {
-        setAmount(amount + 1);
-      }
-    } else {
-      // answer is incorrect
-    }
-
-    // reset lane
-    setLastLane(0);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastLane]);
-
-  return (
-    <div className="flex-1 flex flex-col items-strech">
-      
-      {/*POT*/}
-      <div 
-        className="z-10 text-white bg-red-700 self-center 
-        min-w-[6rem] w-[20vw] max-w-[15rem]
-        min-h-[4.5rem] h-[15vw] max-h-[10rem]">
-        Definition {index + 1}
-      </div>
-
-      {/*FRACTION*/}
-      <div className="bg-orange-400 h-16 flex justify-center items-center">
-        {amount % 3} / 3
-      </div>
-    </div>
-  );
+            </div>
+            {children}
+        </div>
+    )
 }

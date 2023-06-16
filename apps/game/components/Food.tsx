@@ -1,22 +1,31 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { CondensedItem, quizletQuestions } from '../util/quizletQuestions';
 
 export default function Food({
-  id,
+  index,
   isDescending,
   pots,
-  startingLane,
+  currSelectedIndex,
+  nextPercent,
+  nextTerm,
   finishedDescending,
+  isGameRunning,
 }: {
-  id: number,
+  index: number;
   isDescending: boolean;
   pots: number;
-  startingLane: number;
-  finishedDescending: (id: number, lane: number) => void;
+  currSelectedIndex: number;
+  nextPercent: number;
+  nextTerm: () => void;
+  finishedDescending: (index: number, lane: number, term: CondensedItem) => void;
+  isGameRunning: boolean;
 }) {
 
-  const [isSelected, setIsSelected] = useState(false);
-  const [lane, setLane] = useState(startingLane);
+  const [lane, setLane] = useState<number>();
   const [percentDown, setPercentDown] = useState(0);
+  const [item, setItem] = useState<CondensedItem>();
+  const [isRepeatDown, setIsRepeatDown] = useState(false);
+  const div = useRef<HTMLDivElement>(null);
 
   const changeLane = (num: number) => {
     if (lane + num >= 1 && lane + num <= pots) {
@@ -25,55 +34,84 @@ export default function Food({
   };
 
   const changePercentDown = (num?: number) => {
-    if (percentDown >= 90) {
-      finishedDescending(id, lane);
+    if (percentDown == 90) {
+      setIsRepeatDown(false);
       setPercentDown(0);
-      setIsSelected(false);
+      setLane(Math.floor(Math.random() * pots) + 1);
+      finishedDescending(index, lane, item);
     } else {
       setPercentDown(percentDown + (num || 5));
     }
   };
 
-  const handleKeyDown = (key: String) => {
-    if (key == 'ArrowLeft') changeLane(-1);
-    else if (key == 'ArrowRight') changeLane(1);
-    else if (key == 'ArrowDown') changePercentDown();
-  };
+  useEffect(() => {
+    const down = () => changePercentDown();
+    if (isDescending) {
+      if (isRepeatDown) {
+        setTimeout(() => down(), 50);
+      } else {
+        document.addEventListener('descend', down);
+      }
+    }
+    return () => document.removeEventListener('descend', down);
+  });
+
+  useEffect(() => {
+    const left = () => changeLane(-1);
+    const right = () => changeLane(1);
+    const down = () => changePercentDown();
+    const repeatDown = () => setIsRepeatDown(true);
+    if (currSelectedIndex == index && percentDown < 90) {
+      document.addEventListener('left', left);
+      document.addEventListener('right', right);
+      document.addEventListener('down', down);
+      document.addEventListener('repeatDown', repeatDown);
+    }
+    return () => {
+      document.removeEventListener('left', left);
+      document.removeEventListener('right', right);
+      document.removeEventListener('down', down);
+      document.removeEventListener('repeatDown', repeatDown);
+    }
+  });
 
   useEffect(() => {
     if (isDescending) {
-      setLane(startingLane);
-      setPercentDown(0);
+      setItem(quizletQuestions.getNextTerm());
     }
-  }, [isDescending, startingLane]);
+  }, [isDescending]);
 
   useEffect(() => {
-    const callback = () => changePercentDown();
-    if (isDescending) { 
-      document.addEventListener('descend', callback);
+    if (percentDown == nextPercent) {
+      nextTerm();
     }
-    return () => document.removeEventListener('descend', callback);
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [percentDown, nextPercent]);
+
+  useEffect(() => 
+    setLane(Math.floor(Math.random() * pots) + 1),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  []);
   
   return (
-    <div
-      className={
-        `h-20 w-20 text-white bg-orange-950 border-4
-        absolute origin-center -translate-x-1/2 ` +
-        (isDescending ? '' : 'hidden') +
-        (isSelected ? 'border-red-500' : '')
-      }
-      style={{
-        left: (lane / pots) * 100 - 50 / pots + '%',
-        top: percentDown + '%',
-      }}
-      tabIndex={isDescending[id] ? 0 : -1}
-      onFocus={() => setIsSelected(true)}
-      onBlur={() => setIsSelected(false)}
-      onKeyDown={e => handleKeyDown(e.key)}
-      onTouchStart={() => {}}
-      onTouchMove={() => {}}>
-      Term {id + 1}
+    <div className='flex-1'>
+      <div
+        ref={div}
+        className={
+          `h-20 w-20 
+          text-white text-sm text-center break-words leading-none
+          bg-orange-900 border-4
+          flex justify-center items-center
+          absolute origin-center -translate-x-1/2 `
+          + (isDescending ? '' : 'hidden ')
+          + (currSelectedIndex == index ? 'border-red-500 ' : '')
+        }
+        style={{
+          left: (lane / pots) * 100 - 50 / pots + '%',
+          top: percentDown + '%',
+        }}>
+        {isGameRunning ? item?.term : ''}
+      </div>
     </div>
   );
 }
