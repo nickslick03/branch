@@ -12,10 +12,8 @@ const STARTING_MILISECONDS = 500;
 
 export default function Game({
   startGame,
-  setIsGameOver,
 } : {
   startGame: boolean,
-  setIsGameOver: Dispatch<SetStateAction<boolean>>,
 }) {
 
   const [ isGameRunning, setIsGameRunning ] = useState(false);
@@ -79,11 +77,9 @@ export default function Game({
 
   useEffect(() => {
     if (startGame) {
-      setTimeout(() => {
-        setIsGameRunning(true);
-        nextTerm();
-        setCurrSelectedIndex(0);
-      }, 1000);
+      setIsGameRunning(true);
+      nextTerm();
+      setCurrSelectedIndex(0);
       movementEvents();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,11 +88,10 @@ export default function Game({
   if (lives == 0) return <div>game over <br /> your score was {score}</div>;
 
   return (
-    <div className='h-screen flex flex-col text-xl overflow-hidden bg-orange-200'>
+    <div className='h-screen flex flex-col text-xl'>
       
-      <header className='px-2 mb-2 flex justify-between'>
+      <header className='px-4 mb-2 flex justify-between'>
         <Score score={score} />
-        <h1>Order Up!</h1>
         <Lives lives={lives} />
       </header>
 
@@ -115,15 +110,19 @@ export default function Game({
           isGameRunning={isGameRunning} />)}
       </main>
 
-      <footer className='flex'>
-        {potsArray.map((i) =>
-        <Stove 
-          key={i} 
-          index={i} 
-          setScore={setScore}
-          setLives={setLives} 
-          food={finishedFood}
-          isGameRunning={isGameRunning} />)}
+      <footer className='z-10'>
+          <div className='flex'>
+            {potsArray.map((i) =>
+              <Stove 
+                key={i} 
+                index={i} 
+                setScore={setScore}
+                setLives={setLives} 
+                food={finishedFood}
+                isGameRunning={isGameRunning} />)}
+          </div>
+          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-20 md:h-40'>
+          </div>
       </footer>
     </div>
   );

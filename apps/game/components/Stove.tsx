@@ -1,6 +1,18 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { CondensedItem, quizletQuestions } from '../util/quizletQuestions';
 import Pot from './Pot';
+import Image from 'next/image';
+import stoveTopGrill from '../images/StovetopGrill.png';
+import flame1 from '../images/Fire_GIFS/flame1.gif';
+import flame2 from '../images/Fire_GIFS/flame2.gif';
+import flame3 from '../images/Fire_GIFS/flame3.gif';
+import flameWrongAnswer from '../images/Fire_GIFS/flameWrongAnswer.gif';
+
+const FLAMES = [
+  flame1,
+  flame2,
+  flame3,
+];
 
 export default function Stove({
   index,
@@ -17,9 +29,12 @@ export default function Stove({
 }) {
 
   const [item, setItem] = useState<CondensedItem>(null);
-  const [amount, setAmount] = useState(0);
+  const [flameIndex, setFlameIndex] = useState(0);
+  const wrongFlameElement = useRef<HTMLImageElement>();
+  const plus10 = useRef<HTMLSpanElement>();
 
   useEffect(() => {
+    let wrongID: NodeJS.Timeout;
 
     // Food fell into different pot
     if (food?.lane != index + 1) return;
@@ -27,16 +42,22 @@ export default function Stove({
     // answer is correct
     if (food.term.id == item.id) {
       setItem(quizletQuestions.getNextDefinition());
-      if (amount == 2) {
+      if (flameIndex == 2) {
         setScore(s => s + 10);
-        setAmount(0);
+        plus10.current.style.display = 'block';
+        setFlameIndex(0);
       } else {
-        setAmount(amount + 1);
+        setFlameIndex(flameIndex + 1);
       }
     } else {
       quizletQuestions.gotTermWrong(food.term);
       setLives(lives => lives - 1);
-    }  
+      wrongFlameElement.current.style.display = 'block';
+      wrongID = setTimeout(() => wrongFlameElement.current.style.display = '', 1000);
+    } 
+    return () => {
+      clearTimeout(wrongID);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [food]);
 
@@ -46,13 +67,33 @@ export default function Stove({
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col items-strech">
+    <div className="relative flex-1 flex flex-col items-center">
+      <div className='absolute top-0 -translate-y-full text-6xl'>
+        <span 
+          ref={plus10}
+          className={'hidden animate-float'}
+          onAnimationEnd={() => plus10.current.style.display = ''}>
+            +10
+        </span>
+      </div>
+      <Image
+        ref={wrongFlameElement}
+        src={flameWrongAnswer}
+        alt={'wrong answer flame'}
+        className='absolute top-0 w-[80%] max-w-[180px] -translate-y-full hidden' />
       <Pot imgURL={isGameRunning ? item?.imageURL : undefined}>
         {isGameRunning ? (item?.definition ?? '') : ''}
       </Pot>
-      <div className="bg-orange-400 h-16 flex justify-center items-center">
-        {amount % 3} / 3
-      </div>
+      <Image 
+        src={stoveTopGrill} 
+        alt={'stove top'}
+        width={145}
+        className='z-10' />
+      <Image 
+        src={FLAMES[flameIndex]} 
+        alt='stove top flame' 
+        width={145}
+        className='absolute bottom-0' />
     </div>
   );
 }

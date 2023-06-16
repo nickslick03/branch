@@ -10,12 +10,33 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        float: '2s steps(10) float'
+      },
+      backgroundPosition: {
+        bottomAndCenter: 'center 150%, center',
+      },
       colors: {
         brandblue: colors.blue[500],
         brandred: colors.red[500],
       },
       fontFamily: {
-        retro: ['retro']
+        retro: ['retro'],
+      },
+      keyframes: {
+        float: {
+          'from': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+          'to': {
+            opacity: '0',
+            transform: 'translateY(-100px)'
+          }
+        }
+      },
+      transitionTimingFunction: {
+        fiveSteps: 'steps(5)',
       }
     },
   },
