@@ -68,7 +68,7 @@ export default function Stove({
 
   return (
     <div className="relative flex-1 flex flex-col items-center">
-      <div className='absolute top-0 -translate-y-full text-6xl'>
+      <div className='absolute top-0 -translate-y-full text-6xl max-sm:text-3xl'>
         <span 
           ref={plus10}
           className={'hidden animate-float'}

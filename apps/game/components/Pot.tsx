@@ -21,7 +21,7 @@ export default function Pot({
                     "backgroundImage" : imgURL != undefined ? `url("${imgURL}")` : ''
                 }}>
             </div>  
-            <p className="z-10 text-center overflow-hidden break-words w-[80%] h-full">
+            <p className="z-10 text-xl max-sm:text-xs text-center overflow-hidden break-words w-[80%] h-full">
                 {children}
             </p>
         </div>

@@ -55,7 +55,6 @@ export default function Food({
 
   const changePercentDown = (num?: number) => {
     if (percentDown == 90) {
-      console.log(index);
       setIsRepeatDown(false);
       setPercentDown(0);
       setLane(Math.floor(Math.random() * pots) + 1);
