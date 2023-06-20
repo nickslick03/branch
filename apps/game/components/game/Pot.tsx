@@ -10,8 +10,8 @@ export default function Pot({
         <div 
             className="font-bold relative
             flex justify-center items-center
-            w-[30vw] max-w-[200px]
-            h-[27vw] max-h-[180px]
+            w-[30vw] max-w-[166px]
+            h-[27vw] max-h-[150px]
             bg-[url(../images/Pot.png)] bg-no-repeat bg-center bg-contain
             ">
             <div 

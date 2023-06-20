@@ -15,9 +15,9 @@ export type CondensedItem = {
 export const quizletQuestions = (() => {
 
     //const quizletSet = Science.getAllSetsMap().cellBiology;
-    const quizletSet = Quizlet.getRandomSet();
+    //const quizletSet = Quizlet.getRandomSet();
     //const quizletSet = Fun.getAllSetsMap().disneyPrincessTrivia;
-    //const quizletSet = Games.getAllSetsMap().videoGameTrivia;
+    const quizletSet = Games.getAllSetsMap().videoGameTrivia;
 
     const condensedItemList = quizletSet.studiableItem.map<CondensedItem>(item => ({
         id: item.id,

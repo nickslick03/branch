@@ -1,18 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import lettuce from '../images/foods/lettuce.png';
-import lettuceHighlight from '../images/foods/lettuceHighlight.png';
-import potato from '../images/foods/potato.png';
-import potato2 from '../images/foods/potato2.png';
-import potato2Highlight from '../images/foods/potato2Highlight.png';
-import potatoHighlight from '../images/foods/potatoHighlight.png';
-import tomato from '../images/foods/tomato.png';
-import tomatoHighlight from '../images/foods/tomatoHighlight.png';
-import { CondensedItem, quizletQuestions } from '../util/quizletQuestions';
+import lettuce from '../../images/foods/lettuce.png';
+import lettuceHighlight from '../../images/foods/lettuceHighlight.png';
+import potato from '../../images/foods/potato.png';
+import potatoHighlight from '../../images/foods/potatoHighlight.png';
+import tomato from '../../images/foods/tomato.png';
+import tomatoHighlight from '../../images/foods/tomatoHighlight.png';
+import { CondensedItem, quizletQuestions } from '../../util/quizletQuestions';
 
 const FOOD_IMGS = [
   [lettuce, lettuceHighlight],
   [potato, potatoHighlight],
-  [potato2, potato2Highlight],
   [tomato, tomatoHighlight]
 ];
 
@@ -43,7 +40,6 @@ export default function Food({
   const [lane, setLane] = useState<number>();
   const [percentDown, setPercentDown] = useState(0);
   const [item, setItem] = useState<CondensedItem>();
-  const [randomFoodIndex, setRandomFoodIndex] = useState(Math.floor(Math.random() * FOOD_IMGS.length));
   const [isRepeatDown, setIsRepeatDown] = useState(false);
   const div = useRef<HTMLDivElement>(null);
 
@@ -54,7 +50,7 @@ export default function Food({
   };
 
   const changePercentDown = (num?: number) => {
-    if (percentDown == 90) {
+    if (percentDown === 90) {
       setIsRepeatDown(false);
       setPercentDown(0);
       setLane(Math.floor(Math.random() * pots) + 1);
@@ -81,7 +77,7 @@ export default function Food({
     const right = () => changeLane(1);
     const down = () => changePercentDown();
     const repeatDown = () => setIsRepeatDown(true);
-    if (currSelectedIndex == index && percentDown < 90) {
+    if (currSelectedIndex === index && percentDown < 90 && isGameRunning) {
       document.addEventListener('left', left);
       document.addEventListener('right', right);
       document.addEventListener('down', down);
@@ -97,13 +93,12 @@ export default function Food({
 
   useEffect(() => {
     if (isDescending) {
-      setRandomFoodIndex(Math.floor(Math.random() * FOOD_IMGS.length));
       setItem(quizletQuestions.getNextTerm());
     }
   }, [isDescending]);
 
   useEffect(() => {
-    if (percentDown == nextPercent) {
+    if (percentDown === nextPercent) {
       nextTerm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,14 +119,14 @@ export default function Food({
           text-sm text-center break-words leading-none
           flex justify-center items-center
           absolute origin-center -translate-x-1/2 ` +
-          (isDescending ? '' : 'hidden ')
+          (isDescending && isGameRunning ? '' : 'hidden ')
         }
         style={{
           left: (lane / pots) * 100 - 50 / pots + '%',
           top: percentDown + '%',
-          backgroundImage: `url(${FOOD_IMGS[randomFoodIndex][currSelectedIndex == index ? 1 : 0].src})`
+          backgroundImage: `url(${FOOD_IMGS[index % (pots - 1)][currSelectedIndex === index ? 1 : 0].src})`
         }}>
-        {isGameRunning ? item?.term : ''}
+        {item?.term}
       </div>
     </div>
   );

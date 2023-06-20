@@ -11,14 +11,14 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        float: '2s steps(10) float'
+        floatOut: '2s steps(10) float',
+        floatIn: '.5s steps(5) reverse float'
       },
       backgroundPosition: {
         bottomAndCenter: 'center 150%, center',
       },
       colors: {
         brandblue: colors.blue[500],
-        brandred: colors.red[500],
       },
       fontFamily: {
         retro: ['retro'],

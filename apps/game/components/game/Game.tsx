@@ -3,17 +3,21 @@ import Food from './Food';
 import Lives from './Lives';
 import Score from './Score';
 import Stove from './Stove';
-import { createIndexedArray } from '../util/arrayfromlength';
-import { CondensedItem } from '../util/quizletQuestions';
-import { replace } from '../util/replace';
-import { movementEvents } from '../util/movementEvents';
+import { createIndexedArray } from '../../util/arrayfromlength';
+import { CondensedItem } from '../../util/quizletQuestions';
+import { replace } from '../../util/replace';
+import { movementEvents } from '../../util/movementEvents';
 
-const STARTING_MILISECONDS = 500;
+const STARTING_MILISECONDS = 400;
 
 export default function Game({
   startGame,
+  setIsGameOver,
+  setFinalScore,
 } : {
-  startGame: boolean,
+  startGame: boolean;
+  setIsGameOver: Dispatch<SetStateAction<boolean>>;
+  setFinalScore: Dispatch<SetStateAction<number>>;
 }) {
 
   const [ isGameRunning, setIsGameRunning ] = useState(false);
@@ -30,10 +34,10 @@ export default function Game({
   const [ currSelectedIndex, setCurrSelectedIndex ] = useState(-1);
 
   const [ isDescending, setIsDescending ] = useState(potsArray.map(() => false));
+
   const milliseconds = useMemo(() => {
     return STARTING_MILISECONDS * (0.9  ** Math.floor(score / 20));
   }, [score]);
-
   const nextPercent = useMemo(() => {
     const exactPercent = Math.floor(milliseconds / 6.25);
     const roundedPercent = exactPercent - (exactPercent % 5);
@@ -85,13 +89,25 @@ export default function Game({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startGame]);
 
-  if (lives == 0) return <div>game over <br /> your score was {score}</div>;
+  useEffect(() => {
+    if (lives < 1) {
+      setIsGameRunning(false);
+      setFinalScore(score);
+      setTimeout(() => setIsGameOver(true), 2000);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lives]);
 
   return (
     <div className='h-screen flex flex-col text-xl'>
       
       <header className='px-4 mb-2 flex justify-between'>
         <Score score={score} />
+        <button 
+          className='self-start pt-2 mx-10 text-3xl'
+          onClick={() => setIsGameRunning(!isGameRunning)}>
+          {isGameRunning ? '⏸️' : '▶️'}
+        </button>
         <Lives lives={lives} />
       </header>
 
@@ -121,7 +137,7 @@ export default function Game({
                 food={finishedFood}
                 isGameRunning={isGameRunning} />)}
           </div>
-          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-20 md:h-40'>
+          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-10 md:h-20'>
           </div>
       </footer>
     </div>

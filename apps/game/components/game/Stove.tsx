@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { CondensedItem, quizletQuestions } from '../util/quizletQuestions';
+import { CondensedItem, quizletQuestions } from '../../util/quizletQuestions';
 import Pot from './Pot';
 import Image from 'next/image';
-import stoveTopGrill from '../images/StovetopGrill.png';
-import flame1 from '../images/Fire_GIFS/flame1.gif';
-import flame2 from '../images/Fire_GIFS/flame2.gif';
-import flame3 from '../images/Fire_GIFS/flame3.gif';
-import flameWrongAnswer from '../images/Fire_GIFS/flameWrongAnswer.gif';
+import stoveTopGrill from '../../images/StovetopGrill.png';
+import flame1 from '../../images/Fire_GIFS/flame1.gif';
+import flame2 from '../../images/Fire_GIFS/flame2.gif';
+import flame3 from '../../images/Fire_GIFS/flame3.gif';
+import flameWrongAnswer from '../../images/Fire_GIFS/flameWrongAnswer.gif';
 
 const FLAMES = [
   flame1,
@@ -40,9 +40,9 @@ export default function Stove({
     if (food?.lane != index + 1) return;
 
     // answer is correct
-    if (food.term.id == item.id) {
+    if (food.term.id === item.id) {
       setItem(quizletQuestions.getNextDefinition());
-      if (flameIndex == 2) {
+      if (flameIndex === 2) {
         setScore(s => s + 10);
         plus10.current.style.display = 'block';
         setFlameIndex(0);
@@ -71,7 +71,7 @@ export default function Stove({
       <div className='absolute top-0 -translate-y-full text-6xl max-sm:text-3xl'>
         <span 
           ref={plus10}
-          className={'hidden animate-float'}
+          className={'hidden animate-floatOut'}
           onAnimationEnd={() => plus10.current.style.display = ''}>
             +10
         </span>
@@ -80,7 +80,7 @@ export default function Stove({
         ref={wrongFlameElement}
         src={flameWrongAnswer}
         alt={'wrong answer flame'}
-        className='absolute top-0 w-[80%] max-w-[180px] -translate-y-full hidden' />
+        className='absolute top-0 w-[80%] max-w-[150px] -translate-y-full hidden' />
       <Pot imgURL={isGameRunning ? item?.imageURL : undefined}>
         {isGameRunning ? (item?.definition ?? '') : ''}
       </Pot>

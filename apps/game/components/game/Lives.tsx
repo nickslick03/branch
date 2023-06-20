@@ -1,6 +1,6 @@
 import Image from "next/image";
-import healthHolder from "../images/healthHolder.png";
-import healthTicket from "../images/healthTicket.png";
+import healthHolder from "../../images/healthHolder.png";
+import healthTicket from "../../images/healthTicket.png";
 
 export default function Lives({
     lives
@@ -17,16 +17,16 @@ export default function Lives({
                 <Image 
                     src={healthHolder} 
                     alt={"health holder"}
-                    width={200} />
+                    width={150} />
                 <div className="flex justify-between w-[105%]">
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(1)}>
-                        <Image src={healthTicket} alt="heath ticket" width={60} />
+                        <Image src={healthTicket} alt="heath ticket" width={45} />
                     </div>
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(2)}>
-                        <Image src={healthTicket} alt="heath ticket" width={60} />
+                        <Image src={healthTicket} alt="heath ticket" width={45} />
                     </div>
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(3)}>
-                        <Image src={healthTicket} alt="heath ticket" width={60} />
+                        <Image src={healthTicket} alt="heath ticket" width={45} />
                     </div>
                 </div>
             </div>

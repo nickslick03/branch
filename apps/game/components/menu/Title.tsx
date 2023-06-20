@@ -1,13 +1,22 @@
-import { Dispatch, SetStateAction } from "react";
+import { useRef } from "react";
+import Button from "./Button";
 
 export default function Title({
-    setStartGame
+    startFunc
 } : {
-    setStartGame: Dispatch<SetStateAction<boolean>>
+    startFunc: () => void
 }) {
+
+    const div = useRef<HTMLDivElement>();
+
+    const runStart = () => {
+        div.current.style.display = 'none';
+        startFunc();
+    };
 
     return (
         <div 
+            ref={div}
             className="absolute z-20 h-full w-full 
             bg-black bg-opacity-60 text-white
             flex flex-col justify-center items-center gap-32">
@@ -19,11 +28,9 @@ export default function Title({
                     Put the Foods in the correct pot!
                 </p>
             </hgroup>
-            <button 
-                className="text-white bg-brandblue px-20 py-6 hover:bg-[#6ea2f7]" 
-                onClick={() => setStartGame(true)}>
-                Play
-            </button>
+            <Button onClick={runStart}>
+                Get Started
+            </Button>
         </div>
     );
 }
