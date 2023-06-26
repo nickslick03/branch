@@ -11,20 +11,20 @@ export default function Controls() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Computer</th>
-                            <th>Mobile</th>
+                            <th>Move Food</th>
+                            <th>Speed Down</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Move Food</th>
+                            <th>Comptuer</th>
                             <td>Side Arrows</td>
-                            <td>Side Swipe</td>
+                            <td>Down Arrow</td>
                         </tr>
                         <tr>
-                            <th>Speed Down</th>
-                            <td>Down Arrow</td>
-                            <td>Swipe Down</td>
+                            <th>Mobile</th>
+                            <td>Side Swipe</td>
+                            <td>Down Swipe</td>
                         </tr>
                     </tbody>
                 </table>   

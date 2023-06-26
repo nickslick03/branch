@@ -54,9 +54,6 @@ export default function Stove({
       setLives(lives => lives - 1);
       wrongFlameElement.current.style.display = 'block';
       wrongID = setTimeout(() => wrongFlameElement.current.style.display = '', 1000);
-    } 
-    return () => {
-      clearTimeout(wrongID);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [food]);

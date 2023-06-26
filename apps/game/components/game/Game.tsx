@@ -93,7 +93,7 @@ export default function Game({
     if (lives < 1) {
       setIsGameRunning(false);
       setFinalScore(score);
-      setTimeout(() => setIsGameOver(true), 2000);
+      setTimeout(() => setIsGameOver(true), 1000);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lives]);
