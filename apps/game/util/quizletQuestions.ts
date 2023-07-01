@@ -1,7 +1,7 @@
 import Quizlet from "dataset";
 import Fun from "dataset/sets/Fun";
 import Games from "dataset/sets/Games";
-import Science from "dataset/sets/Science"
+import Science from "dataset/sets/Science";
 import { SerializedMediaImage, SerializedMediaText } from "dataset/types";
 import { shuffle } from "./shuffle";
 
@@ -14,10 +14,10 @@ export type CondensedItem = {
 
 export const quizletQuestions = (() => {
 
-    //const quizletSet = Science.getAllSetsMap().cellBiology;
+    const quizletSet = Science.getAllSetsMap().cellBiology;
     //const quizletSet = Quizlet.getRandomSet();
     //const quizletSet = Fun.getAllSetsMap().disneyPrincessTrivia;
-    const quizletSet = Games.getAllSetsMap().videoGameTrivia;
+    //const quizletSet = Games.getAllSetsMap().videoGameTrivia;
 
     const condensedItemList = quizletSet.studiableItem.map<CondensedItem>(item => ({
         id: item.id,

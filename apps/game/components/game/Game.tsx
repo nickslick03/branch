@@ -6,7 +6,10 @@ import Stove from './Stove';
 import { createIndexedArray } from '../../util/arrayfromlength';
 import { CondensedItem } from '../../util/quizletQuestions';
 import { replace } from '../../util/replace';
-import { movementEvents } from '../../util/movementEvents';
+import { dispatchMovementEvents } from '../../util/movementEvents';
+import pause from '../../images/Pause.png';
+import play from '../../images/Play.png';
+import Image from 'next/image';
 
 const STARTING_MILISECONDS = 400;
 
@@ -80,11 +83,13 @@ export default function Game({
   };
 
   useEffect(() => {
+    const togglePause = () => setIsGameRunning((isGameRunning) => !isGameRunning);
     if (startGame) {
       setIsGameRunning(true);
       nextTerm();
       setCurrSelectedIndex(0);
-      movementEvents();
+      dispatchMovementEvents();
+      document.addEventListener('togglePause', togglePause);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startGame]);
@@ -99,14 +104,17 @@ export default function Game({
   }, [lives]);
 
   return (
-    <div className='h-screen flex flex-col text-xl'>
-      
+    <div
+      className='h-screen flex flex-col text-xl'>
       <header className='px-4 mb-2 flex justify-between'>
         <Score score={score} />
         <button 
-          className='self-start pt-2 mx-10 text-3xl'
+          className='self-start pt-4 mx-10 text-3xl'
           onClick={() => setIsGameRunning(!isGameRunning)}>
-          {isGameRunning ? '⏸️' : '▶️'}
+            <Image
+              src={isGameRunning ? pause : play}
+              alt="pause / play button"
+              width={60} />
         </button>
         <Lives lives={lives} />
       </header>

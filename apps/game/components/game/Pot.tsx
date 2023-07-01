@@ -10,10 +10,9 @@ export default function Pot({
         <div 
             className="font-bold relative
             flex justify-center items-center
-            w-[30vw] max-w-[166px]
-            h-[27vw] max-h-[150px]
-            bg-[url(../images/Pot.png)] bg-no-repeat bg-center bg-contain
-            ">
+            w-[30vw] max-w-[140px]
+            aspect-[10/9]
+            bg-[url(../images/Pot.png)] bg-no-repeat bg-center bg-contain">
             <div 
                 className="absolute w-[80%] h-full
                 bg-no-repeat bg-cover bg-center opacity-60"
@@ -21,7 +20,7 @@ export default function Pot({
                     "backgroundImage" : imgURL != undefined ? `url("${imgURL}")` : ''
                 }}>
             </div>  
-            <p className="z-10 text-xl max-sm:text-xs text-center overflow-hidden break-words w-[80%] h-full">
+            <p className="z-10 text-xs text-center overflow-hidden break-words w-[80%] h-full">
                 {children}
             </p>
         </div>

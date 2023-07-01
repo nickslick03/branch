@@ -3,7 +3,7 @@ type coord = {
     y: number;
 }
 
-export function movementEvents() {
+export function dispatchMovementEvents() {
 
     const start = {
         x: 0,
@@ -18,6 +18,7 @@ export function movementEvents() {
     const right = new CustomEvent("right");
     const down = new CustomEvent("down");
     const repeatDown = new CustomEvent("repeatDown");
+    const togglePause = new CustomEvent("togglePause");
 
     document.addEventListener('touchstart', e => {
         start.x = e.changedTouches[0].screenX;
@@ -47,6 +48,7 @@ export function movementEvents() {
         if (key == 'ArrowLeft') document.dispatchEvent(left);
         else if (key == 'ArrowRight') document.dispatchEvent(right);
         else if (key == 'ArrowDown') document.dispatchEvent(down);
+        else if (key == 'p' || key == 'P') document.dispatchEvent(togglePause);
     };
 }
 
