@@ -10,7 +10,7 @@ export default function Score({
     return (
         <div className="pt-4">
             <div className="h-min relative">
-                <Image src={scoreboard} alt='score board' className="w-[150px]" />
+                <Image src={scoreboard} alt='score board' className="w-[120px]" />
                 <div className="absolute top-0 left-1 -translate-y-1/2 text-xl sm:text-2xl scale-y-150">
                     score
                 </div>

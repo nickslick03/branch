@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import Food from './Food';
 import Lives from './Lives';
 import Score from './Score';
@@ -9,7 +9,10 @@ import { replace } from '../../util/replace';
 import { dispatchMovementEvents } from '../../util/movementEvents';
 import pause from '../../images/Pause.png';
 import play from '../../images/Play.png';
+import definitionBoardLeft from '../../images/definitionBoard_mobile_splitleft.png';
+import definitionBoardRight from '../../images/definitionBoard_mobile_splitright.png';
 import Image from 'next/image';
+import { createRef } from 'react';
 
 const STARTING_MILISECONDS = 400;
 
@@ -35,12 +38,14 @@ export default function Game({
   const potsArray = createIndexedArray(pots);
 
   const [ currSelectedIndex, setCurrSelectedIndex ] = useState(-1);
+  const [ currLane, setCurrLane ] = useState(-1);
 
   const [ isDescending, setIsDescending ] = useState(potsArray.map(() => false));
 
   const milliseconds = useMemo(() => {
     return STARTING_MILISECONDS * (0.9  ** Math.floor(score / 20));
   }, [score]);
+  
   const nextPercent = useMemo(() => {
     const exactPercent = Math.floor(milliseconds / 6.25);
     const roundedPercent = exactPercent - (exactPercent % 5);
@@ -109,7 +114,7 @@ export default function Game({
       <header className='px-4 mb-2 flex justify-between'>
         <Score score={score} />
         <button 
-          className='self-start pt-4 mx-10 text-3xl'
+          className='self-start pt-4 mx-12 text-3xl'
           onClick={() => setIsGameRunning(!isGameRunning)}>
             <Image
               src={isGameRunning ? pause : play}
@@ -128,6 +133,7 @@ export default function Game({
           pots={pots}
           isDescending={isDescending[i]} 
           currSelectedIndex={currSelectedIndex}
+          setCurrLane={setCurrLane}
           nextPercent={nextPercent}
           nextTerm={nextTerm}
           finishedDescending={finishedDescending}
@@ -143,9 +149,23 @@ export default function Game({
                 setScore={setScore}
                 setLives={setLives} 
                 food={finishedFood}
-                isGameRunning={isGameRunning} />)}
+                isGameRunning={isGameRunning}
+                currLane={currLane} />)}
           </div>
-          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-10 md:h-20'>
+          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-24 md:h-32'>
+          </div>
+          <div className='absolute bottom-2 w-full h-20 md:h-28 flex items-center'>
+            <Image 
+              src={definitionBoardLeft}
+              alt=''
+              className='h-full w-auto'/>
+            <p className='h-full flex-1 text-sm md:text-lg py-1 overflow-hidden 
+            bg-[url(../images/definitionBoard_mobile_splitmiddle.png)] bg-contain'>
+            </p>
+            <Image 
+              src={definitionBoardRight}
+              alt=''
+              className='h-full w-auto'/>
           </div>
       </footer>
     </div>

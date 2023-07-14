@@ -20,12 +20,14 @@ export default function Stove({
   setLives,
   food,
   isGameRunning,
+  currLane,
 }: {
   index: number;
   setScore: Dispatch<SetStateAction<number>>;
   setLives: Dispatch<SetStateAction<number>>;
   food: {lane: number, term: CondensedItem};
   isGameRunning: boolean;
+  currLane: number;
 }) {
 
   const [item, setItem] = useState<CondensedItem>(null);
@@ -59,38 +61,48 @@ export default function Stove({
   }, [food]);
 
   useEffect(() => {
-    console.log('firstItems');
     setItem(quizletQuestions.getNextDefinition());
   }, []);
 
   return (
-    <div className="relative flex-1 flex flex-col items-center">
-      <div className='absolute top-0 -translate-y-full text-6xl max-sm:text-3xl'>
-        <span 
-          ref={plus10}
-          className={'hidden animate-floatOut'}
-          onAnimationEnd={() => plus10.current.style.display = ''}>
-            +10
-        </span>
+    <>
+      <div className="z-20 relative flex-1 flex flex-col items-center">
+        <div className='absolute top-0 -translate-y-full text-6xl max-sm:text-3xl'>
+          <span 
+            ref={plus10}
+            className={'hidden animate-floatOut'}
+            onAnimationEnd={() => plus10.current.style.display = ''}>
+              +10
+          </span>
+        </div>
+        <Image
+          ref={wrongFlameElement}
+          src={flameWrongAnswer}
+          alt={'wrong answer flame'}
+          className='absolute top-0 w-[80%] max-w-[120px] -translate-y-full hidden' />
+        <Pot imgURL={isGameRunning ? item?.imageURL : undefined}>
+          {isGameRunning ? (item?.definition ?? '') : ''}
+        </Pot>
+        <Image 
+          src={stoveTopGrill} 
+          alt={'stove top'}
+          width={120}
+          className='z-10' />
+        <Image 
+          src={FLAMES[flameIndex]} 
+          alt='stove top flame' 
+          width={120}
+          className='absolute bottom-0' />
       </div>
-      <Image
-        ref={wrongFlameElement}
-        src={flameWrongAnswer}
-        alt={'wrong answer flame'}
-        className='absolute top-0 w-[80%] max-w-[120px] -translate-y-full hidden' />
-      <Pot imgURL={isGameRunning ? item?.imageURL : undefined}>
-        {isGameRunning ? (item?.definition ?? '') : ''}
-      </Pot>
-      <Image 
-        src={stoveTopGrill} 
-        alt={'stove top'}
-        width={120}
-        className='z-10' />
-      <Image 
-        src={FLAMES[flameIndex]} 
-        alt='stove top flame' 
-        width={120}
-        className='absolute bottom-0' />
-    </div>
+      <p 
+        className='z-10 fixed bottom-2 left-0 w-full h-20 md:h-28 
+        flex-1 text-sm md:text-lg px-4 py-1 overflow-hidden'
+        style={{
+          visibility: (currLane - 1) === index && isGameRunning ? 'visible' : 'hidden'
+        }}>
+        {item?.definition}
+      </p>
+    </>
+    
   );
 }

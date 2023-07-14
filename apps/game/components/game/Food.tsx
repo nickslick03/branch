@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import lettuce from '../../images/foods/lettuce.png';
 import lettuceHighlight from '../../images/foods/lettuceHighlight.png';
 import potato from '../../images/foods/potato.png';
@@ -19,6 +19,7 @@ export default function Food({
   pots,
   currSelectedIndex,
   nextPercent,
+  setCurrLane,
   nextTerm,
   finishedDescending,
   isGameRunning,
@@ -28,6 +29,7 @@ export default function Food({
   pots: number;
   currSelectedIndex: number;
   nextPercent: number;
+  setCurrLane: Dispatch<SetStateAction<number>>;
   nextTerm: () => void;
   finishedDescending: (
     index: number,
@@ -45,6 +47,9 @@ export default function Food({
 
   const changeLane = (num: number) => {
     if (lane + num >= 1 && lane + num <= pots) {
+      if (currSelectedIndex === index) {
+        setCurrLane(lane + num);
+      }
       setLane(lane + num);
     }
   };
@@ -104,30 +109,40 @@ export default function Food({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [percentDown, nextPercent]);
 
-  useEffect(
-    () => setLane(Math.floor(Math.random() * pots) + 1),
+  useEffect(() => {
+    if (currSelectedIndex === index) setCurrLane(lane);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currSelectedIndex, index]);
+
+  useEffect(() => {
+      const startingLane = Math.floor(Math.random() * pots) + 1;
+      if (index === 0) setCurrLane(startingLane);
+      setLane(startingLane)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   return (
-    <div className="flex-1">
-      <div
-        ref={div}
-        className={
-          `h-28 w-28 bg-no-repeat bg-contain bg-center
-          text-sm text-center break-words leading-none
-          flex justify-center items-center
-          absolute origin-center -translate-x-1/2 ` +
-          (isDescending && isGameRunning ? '' : 'hidden ')
-        }
-        style={{
-          left: (lane / pots) * 100 - 50 / pots + '%',
-          top: percentDown + '%',
-          backgroundImage: `url(${FOOD_IMGS[index % (pots - 1)][currSelectedIndex === index ? 1 : 0].src})`
-        }}>
-        {item?.term}
+    <>
+      <div className="flex-1">
+        <div
+          ref={div}
+          className={
+            `h-28 w-28 bg-no-repeat bg-contain bg-center
+            text-sm text-center break-words leading-none
+            flex justify-center items-center
+            absolute origin-center -translate-x-1/2 ` +
+            (isDescending && isGameRunning ? '' : 'hidden ')
+          }
+          style={{
+            left: (lane / pots) * 100 - 50 / pots + '%',
+            top: percentDown + '%',
+            backgroundImage: `url(${FOOD_IMGS[index % (pots - 1)][currSelectedIndex === index ? 1 : 0].src})`
+          }}>
+          {item?.term}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

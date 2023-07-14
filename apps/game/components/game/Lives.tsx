@@ -8,6 +8,8 @@ export default function Lives({
     lives: number
 }) {
 
+    const WIDTH_SCALE = 120;
+
     const loseHealth = (heartNum: number) =>
         heartNum > lives ? ' translate-y-32 opacity-0' : '';
 
@@ -17,16 +19,16 @@ export default function Lives({
                 <Image 
                     src={healthHolder} 
                     alt={"health holder"}
-                    width={150} />
+                    width={WIDTH_SCALE} />
                 <div className="flex justify-between w-[105%]">
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(1)}>
-                        <Image src={healthTicket} alt="heath ticket" width={45} />
+                        <Image src={healthTicket} alt="heath ticket" width={WIDTH_SCALE * 0.3} />
                     </div>
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(2)}>
-                        <Image src={healthTicket} alt="heath ticket" width={45} />
+                        <Image src={healthTicket} alt="heath ticket" width={WIDTH_SCALE * 0.3} />
                     </div>
                     <div className={"transition-[opacity,_transform] ease-fiveSteps duration-1000 delay-[1000ms]" + loseHealth(3)}>
-                        <Image src={healthTicket} alt="heath ticket" width={45} />
+                        <Image src={healthTicket} alt="heath ticket" width={WIDTH_SCALE * 0.3} />
                     </div>
                 </div>
             </div>
