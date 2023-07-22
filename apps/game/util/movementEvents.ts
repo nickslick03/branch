@@ -3,6 +3,9 @@ type coord = {
     y: number;
 }
 
+/**
+ * Adds event listeners to the document that dispatch different events needed for the game.
+ */
 export function dispatchMovementEvents() {
 
     const start = {
@@ -28,22 +31,37 @@ export function dispatchMovementEvents() {
     document.addEventListener('touchend', e => {
         end.x = e.changedTouches[0].screenX;
         end.y = e.changedTouches[0].screenY;
-        checkDirection(start, end);
+        checkSwipe(start, end);
     });
 
     document.addEventListener('keydown', e => {
         checkKey(e.key);
     });
 
+    /**
+     * Checks if user swiped down and the slope of the swipe line is greater than 1 or greater than -1.
+     * @param start The starting coordinate of the swipe
+     * @param end The ending coordinate of the swipe
+     * @returns A boolean indicating whether the swipe was downward.
+     */
     const isSwipeDown = (start: coord, end: coord) => 
         end.y > start.y && (end.y - start.y) > Math.abs(end.x - start.x);
 
-    const checkDirection = (start: coord, end: coord) => {
+    /**
+     * Dispatches a direction event for the game based on the swipe coordinates.
+     * @param start The starting coordinate of the swipe
+     * @param end The ending coordinate of the swipe
+     */
+    const checkSwipe = (start: coord, end: coord) => {
         if (isSwipeDown(start, end)) document.dispatchEvent(repeatDown);
         else if (end.x < start.x) document.dispatchEvent(left);
         else if (end.x > start.x) document.dispatchEvent(right);
     };
 
+    /**
+     * Dispatches a direction event for the game based on the key clicked.
+     * @param key a string representing the key the user input
+     */
     const checkKey = (key: String) => {
         if (key == 'ArrowLeft') document.dispatchEvent(left);
         else if (key == 'ArrowRight') document.dispatchEvent(right);

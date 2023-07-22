@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import Food from './Food';
 import Lives from './Lives';
 import Score from './Score';
@@ -12,17 +12,28 @@ import play from '../../images/Play.png';
 import definitionBoardLeft from '../../images/definitionBoard_mobile_splitleft.png';
 import definitionBoardRight from '../../images/definitionBoard_mobile_splitright.png';
 import Image from 'next/image';
-import { createRef } from 'react';
 
 const STARTING_MILISECONDS = 400;
 
+/**
+ * The base component in which the game runs in. 
+ */
 export default function Game({
   startGame,
   setIsGameOver,
   setFinalScore,
 } : {
+  /**
+   * Boolean that indicates whether the game should start. Do not make it false once it has been made true.
+   */
   startGame: boolean;
+  /**
+   * setState function that is made true when the game ends (when the user has zero lives).
+   */
   setIsGameOver: Dispatch<SetStateAction<boolean>>;
+  /**
+   * setState function in which the final score the user got is set in.
+   */
   setFinalScore: Dispatch<SetStateAction<number>>;
 }) {
 
@@ -53,23 +64,49 @@ export default function Game({
     return Math.max(roundedPercent, minPercent);
   }, [milliseconds, pots]);
   
+  /**
+   * Changes whether a Food component from a specific index is descending.
+   * @param index the index of the Food component
+   * @param bool if true, the Food component starts to descend 
+   * from the top of the container. If false, the Food component disappears
+   */
   const changeDescending = (index: number, bool: boolean) => {
     setIsDescending(replace(isDescending, bool, index));
   }
   
+  /**
+   * Sets the next Food component to descend.
+   */
   const turnOnDescending = () => {
     changeDescending(nextIndex, true);
     setNextIndex((nextIndex + 1) % isDescending.length);
   };
 
+  /**
+   * Makes the Food component at the index disappear.
+   * @param index the index of the Food component
+   */
   const turnOffDescending = (index: number) => {
     changeDescending(index, false);
   };
 
+  /**
+   * Callback function run in a Food component when it has reached a definition (Pot component).
+   * @param index the index of the Food component
+   * @param lane the lane the Food component fell in
+   * @param term the term on the Food component
+   */
   const finishedDescending = (index: number, lane: number, term: CondensedItem) => {
     turnOffDescending(index);
     setFinishedFood({lane, term});
     setCurrSelectedIndex((currSelectedIndex + 1) % pots);
+  };
+
+  /**
+   * Makes the next Food component start to descend.
+   */
+  const nextTerm = () => {
+    turnOnDescending();
   };
 
   useEffect(() => {
@@ -82,10 +119,6 @@ export default function Game({
       clearInterval(descendID);
     };
   }, [milliseconds, isGameRunning]);
-
-  const nextTerm = () => {
-    turnOnDescending();
-  };
 
   useEffect(() => {
     const togglePause = () => setIsGameRunning((isGameRunning) => !isGameRunning);
@@ -152,9 +185,9 @@ export default function Game({
                 isGameRunning={isGameRunning}
                 currLane={currLane} />)}
           </div>
-          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-24 md:h-32'>
+          <div className='bg-[url(../images/Stove.png)] bg-no-repeat bg-top bg-cover h-24 sm:h-16'>
           </div>
-          <div className='absolute bottom-2 w-full h-20 md:h-28 flex items-center'>
+          <div className='absolute bottom-2 w-full h-20 md:h-28 flex items-center sm:hidden'>
             <Image 
               src={definitionBoardLeft}
               alt=''

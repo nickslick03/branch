@@ -1,6 +1,9 @@
 import { PropsWithChildren } from "react";
 
-export default function Modal({ 
+/**
+ * A wrapper for modal components.
+ */
+export default function Modal({
     children 
 } : {} & PropsWithChildren) {
 

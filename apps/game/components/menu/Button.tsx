@@ -1,9 +1,15 @@
 import { PropsWithChildren } from "react";
 
+/**
+ * A button component. 
+ */
 export default function Button({
     onClick,
     children
 }: {
+    /**
+     * The callback function when the button is clicked.
+     */
     onClick?: () => any
 } & PropsWithChildren) {
     return (

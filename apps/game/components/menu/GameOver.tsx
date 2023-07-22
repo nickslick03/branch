@@ -1,11 +1,20 @@
 import Button from "./Button";
 import Modal from "./Modal";
 
+/**
+ * Displays a game over splash screen using the Modal component. The "play again" button reloads the page.
+ */
 export default function GameOver({
     isGameOver,
     score,
 } : {
+    /**
+     * A boolean indicating whether the game is over.
+     */
     isGameOver: boolean;
+    /**
+     * The total score the user got.
+     */
     score: number;
 }) {
 

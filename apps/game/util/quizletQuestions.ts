@@ -2,6 +2,9 @@ import Quizlet from "dataset";
 import { SerializedMediaImage, SerializedMediaText } from "dataset/types";
 import { shuffle } from "./shuffle";
 
+/**
+ * Condensed version of the StudiableItem type which removes the clutter.
+ */
 export type CondensedItem = {
     id: number;
     term: string;
@@ -9,6 +12,9 @@ export type CondensedItem = {
     imageURL?: string;
 };
 
+/**
+ * IIFE which returns methods that help with the question distribution for the game components.
+ */
 export const quizletQuestions = (() => {
 
     const quizletSet = Quizlet.getRandomSet();
@@ -28,7 +34,11 @@ export const quizletQuestions = (() => {
     let currDefIndex = 0;
 
     return {
-
+        /**
+         * Finds the next term in the form of a CondensedItem. If the user got terms wrong, 
+         * it returns the first term the user got wrong.
+         * @returns a CondensedItem to be used as the next term.
+         */
         getNextTerm() {
             if (wrongTerms.size > 0) {
                 const item = Array.from(wrongTerms)[0];
@@ -42,6 +52,10 @@ export const quizletQuestions = (() => {
             return currDefList[randIndex];
         },
 
+        /**
+         * Chooses a CondensedItem randomly from a set of available definitions.
+         * @returns a CondensedItem to be used as a definition.
+         */
         getNextDefinition() {
             const lastIndex = currDefIndex;
             currDefIndex = (currDefIndex + 1) % randomIndicies.length;
@@ -50,6 +64,10 @@ export const quizletQuestions = (() => {
             return item;
         },
 
+        /**
+         * Stores a CondensedItem as a term the user got wrong for future use.
+         * @param item the term that was wrong
+         */
         gotTermWrong(item: CondensedItem) {
             wrongTerms.add(item);
         },

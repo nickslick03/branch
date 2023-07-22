@@ -14,6 +14,9 @@ const FLAMES = [
   flame3,
 ];
 
+/**
+ * Contains a Pot Component and displays the definition of the curent lane that the bottom-most Food component is in.
+ */
 export default function Stove({
   index,
   setScore,
@@ -22,11 +25,29 @@ export default function Stove({
   isGameRunning,
   currLane,
 }: {
+  /**
+   * The index of the Stove component
+   */
   index: number;
+  /**
+   * Sets the score of the game
+   */
   setScore: Dispatch<SetStateAction<number>>;
+  /**
+   * Sets the amount of lives the user has
+   */
   setLives: Dispatch<SetStateAction<number>>;
+  /**
+   * The most recent food that finished descending
+   */
   food: {lane: number, term: CondensedItem};
+  /**
+   * Boolean indicating whether the game is running or paused (or over)
+   */
   isGameRunning: boolean;
+  /**
+   * The current lane the bottom-most Food component is in
+   */
   currLane: number;
 }) {
 
@@ -95,14 +116,13 @@ export default function Stove({
           className='absolute bottom-0' />
       </div>
       <p 
-        className='z-10 fixed bottom-2 left-0 w-full h-20 md:h-28 
-        flex-1 text-sm md:text-lg px-4 py-1 overflow-hidden'
+        className='z-10 absolute bottom-2 left-0 w-full h-20 md:h-28 
+        flex-1 text-sm md:text-lg px-4 py-1 overflow-hidden sm:hidden'
         style={{
           visibility: (currLane - 1) === index && isGameRunning ? 'visible' : 'hidden'
         }}>
         {item?.definition}
       </p>
     </>
-    
   );
 }

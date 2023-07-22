@@ -1,9 +1,15 @@
 import Image from "next/image";
 import scoreboard from "../../images/scoreboard.png";
 
+/**
+ * Displays the score of the game.
+ */
 export default function Score({
     score
 }: {
+    /**
+     * The current score
+     */
     score: number
 }) {
 

@@ -1,6 +1,9 @@
 import Modal from './Modal';
 import Button from './Button';
 
+/**
+ * A modal which displays how to play Order Up.
+ */
 export default function HowToPlay() {
 
   return (

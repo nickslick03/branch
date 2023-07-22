@@ -1,12 +1,24 @@
 import { useRef, useState } from "react";
 
+/**
+ * Displays an array of components sequentially. When a component is clicked on, it displays the next component.
+ */
 export default function ModalSlide({
     isStarted,
     modals,
     endFunc,
 } : {
+    /**
+     * When true, displays the first component in the modals array.
+     */
     isStarted: boolean;
+    /**
+     * An array of components displayed sequentially.
+     */
     modals: JSX.Element[];
+    /**
+     * A callback function that is run when the last component in the modals array has been clicked.
+     */
     endFunc: () => any;
 }) {
     
