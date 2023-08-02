@@ -99,14 +99,14 @@ export default function Stove({
         <Image
           ref={wrongFlameElement}
           src={flameWrongAnswer}
-          alt={'wrong answer flame'}
+          alt='wrong answer flame'
           className='absolute top-0 w-[80%] max-w-[120px] -translate-y-full hidden' />
         <Pot imgURL={isGameRunning ? item?.imageURL : undefined}>
           {isGameRunning ? (item?.definition ?? '') : ''}
         </Pot>
         <Image 
           src={stoveTopGrill} 
-          alt={'stove top'}
+          alt='stove top'
           width={120}
           className='z-10' />
         <Image 

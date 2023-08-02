@@ -167,8 +167,9 @@ export default function Food({
       <div
         ref={div}
         className={
-          `h-28 w-28 bg-no-repeat bg-contain bg-center
-          text-sm text-center break-words leading-none
+          `w-[26.4vw] max-w-[128px] aspect-square 
+          bg-no-repeat bg-contain bg-center
+          text-sm text-center break-words leading-none select-none
           flex justify-center items-center
           absolute origin-center -translate-x-1/2 ` +
           (isDescending && isGameRunning ? '' : 'hidden ')
@@ -177,7 +178,7 @@ export default function Food({
           left: (lane / pots) * 100 - 50 / pots + '%',
           top: percentDown + '%',
           backgroundImage: `url(${
-            FOOD_IMGS[index % (pots - 1)][currSelectedIndex === index ? 1 : 0]
+            FOOD_IMGS[index % (pots)][currSelectedIndex === index ? 1 : 0]
               .src
           })`,
         }}>

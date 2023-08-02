@@ -54,8 +54,8 @@ export default function Game({
   const [ isDescending, setIsDescending ] = useState(potsArray.map(() => false));
 
   const milliseconds = useMemo(() => {
-    return STARTING_MILISECONDS * (0.9  ** Math.floor(score / 20));
-  }, [score]);
+    return (STARTING_MILISECONDS * (0.9  ** Math.floor(score / 20)) + ((3 - lives) * 50));
+  }, [score, lives]);
   
   const nextPercent = useMemo(() => {
     const exactPercent = Math.floor(milliseconds / 6.25);
